@@ -1,0 +1,81 @@
+class Account
+  attr_reader :account_number, :balance
+
+  def initialize(account_number, initial_balance = 0)
+    @account_number = account_number
+    @balance = initial_balance
+  end
+
+  def deposit(amount)
+    @balance += amount
+    puts "Vklad ve výši #{amount} Kč byl proveden."
+  end
+
+  def withdraw(amount)
+    if @balance >= amount
+      @balance -= amount
+      puts "Výběr ve výši #{amount} Kč byl proveden."
+    else
+      puts "Nedostatečný zůstatek na účtu."
+    end
+  end
+
+  def display_balance
+    puts "Aktuální zůstatek na účtu #{@account_number} je #{@balance} Kč."
+  end
+end
+
+class Bank
+  def initialize
+    @accounts = {}
+  end
+
+  def create_account(account_number, initial_balance = 0)
+    if @accounts.key?(account_number)
+      puts "Účet s tímto číslem již existuje."
+    else
+      @accounts[account_number] = Account.new(account_number, initial_balance)
+      puts "Účet s číslem #{account_number} byl vytvořen."
+    end
+  end
+
+  def get_account(account_number)
+    if @accounts.key?(account_number)
+      return @accounts[account_number]
+    else
+      puts "Účet s tímto číslem neexistuje."
+      return nil
+    end
+  end
+end
+
+bank = Bank.new
+
+loop do
+  puts "\n******** Bankovní aplikace ********"
+  puts "1. Vytvořit nový účet"
+  puts "2. Vklad na účet"
+  puts "3. Výběr z účtu"
+  puts "4. Zobrazit zůstatek na účtu"
+  puts "5. Konec"
+
+  print "Zadejte číslo volby: "
+  choice = gets.chomp
+
+  case choice
+  when "1"
+    print "Zadejte číslo účtu: "
+    account_number = gets.chomp
+    print "Zadejte počáteční zůstatek na účtu: "
+    initial_balance = gets.chomp.to_f
+    bank.create_account(account_number, initial_balance)
+
+  when "2"
+    print "Zadejte číslo účtu: "
+    account_number = gets.chomp
+    account = bank.get_account(account_number)
+    if account
+      print "Zadejte částku k vložení: "
+      amount = gets.chomp.to_f
+      account.deposit(amount)
+    end
