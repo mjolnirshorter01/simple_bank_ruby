@@ -79,3 +79,28 @@ loop do
       amount = gets.chomp.to_f
       account.deposit(amount)
     end
+
+  when "3"
+    print "Zadejte číslo účtu: "
+    account_number = gets.chomp
+    account = bank.get_account(account_number)
+    if account
+      print "Zadejte částku k výběru: "
+      amount = gets.chomp.to_f
+      account.withdraw(amount)
+    end
+
+  when "4"
+    print "Zadejte číslo účtu: "
+    account_number = gets.chomp
+    account = bank.get_account(account_number)
+    account.display_balance if account
+
+  when "5"
+    puts "Děkujeme, že jste použili bankovní aplikaci. Ukončení programu."
+    break
+
+  else
+    puts "Neplatná volba. Zadejte číslo volby znovu."
+  end
+end
